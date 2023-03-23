@@ -17,6 +17,10 @@ namespace Bank_Application.Controller
         private bool isRunning;
         private UserBankInfo userBankInfo;
         private UserInfo userInfo;
+        private CreditMoneyInfo creditMoneyInfo;
+        private CreditDateInfo creditDateInfo;
+        private CreditBooleanInfo creditBooleanInfo;
+
         public BankController(BankService bankService, AppView appView)
         {
             this.bankService = bankService;
@@ -29,6 +33,7 @@ namespace Bank_Application.Controller
            
             while (isRunning)
             {
+
                 if(loginSuccess)
                 {
                     view.PrintAllCommands();
@@ -74,6 +79,15 @@ namespace Bank_Application.Controller
                 case 4:
                     this.TransferMoney();
                     break;
+                case 5:
+                    this.ShowCreditInfo();
+                    break;
+                case 6:
+                    this.TakeCredit();
+                    break;
+                case 7:
+                    this.PayCredit();
+                    break;
                 case 8:
                     this.LogOut();
                     break;
@@ -82,20 +96,33 @@ namespace Bank_Application.Controller
                 break;
             }
         }
-
-
-
+        private void ProcessCreditCommands(int creditChoice)
+        {
+            switch (creditChoice)
+            {
+                case 1:
+                    this.Credit1();
+                    break;
+                case 2:
+                    this.Credit2();
+                    break;
+                case 3:
+                    this.Credit3();
+                    break;
+                case 4:
+                    this.GoBack();
+                    break;
+            }
+        }
         private void Register()
         {
 
-            UserInfo userInfo = view.ReadRegisterUserInfo();
+            userInfo = view.ReadRegisterUserInfo();
             string pin = view.ReadRegisterPin();
             string card_number = this.bankService.CreateRandomCardNumber();
             string iban = this.bankService.CreateRandomIBAN();
-            UserBankInfo userBankInfo = new UserBankInfo(card_number, pin, userInfo.EGN, iban);
-            CreditMoneyInfo creditMoneyInfo = new CreditMoneyInfo(card_number);
-            CreditDateInfo creditDateInfo = new CreditDateInfo(card_number);
-            CreditBooleanInfo creditBooleanInfo = new CreditBooleanInfo(card_number);
+            userBankInfo = new UserBankInfo(card_number, pin, userInfo.EGN, iban);
+            creditBooleanInfo = new CreditBooleanInfo(card_number, false);
 
             bool registrationSuccess = true;
             if (userInfo.EGN.Length != 10)
@@ -129,7 +156,7 @@ namespace Bank_Application.Controller
             if (registrationSuccess)
             {
                 view.SuccessfulRegistrationMessage(card_number, iban);
-                this.bankService.RegisterUser(userInfo, userBankInfo);
+                this.bankService.RegisterUser(userInfo, userBankInfo, creditBooleanInfo);
             }
                 bool loginSuccess = false;
                 Run(loginSuccess);
@@ -141,6 +168,10 @@ namespace Bank_Application.Controller
             string pin = view.ReadLogInPIN();         
             userBankInfo = this.bankService.LogInUserInto1stTable(card_number);
             userInfo = this.bankService.LogInUserInto2ndTable(userBankInfo.EGN);
+            creditBooleanInfo = this.bankService.LogInUserInto3rdTable(card_number);
+            creditDateInfo = this.bankService.LogInUserInto4thTable(card_number);
+            creditMoneyInfo = this.bankService.LogInUserInto5thTable(card_number);
+
             bool loginSuccess = false;
             if (pin != userBankInfo.PIN)
             {
@@ -157,7 +188,6 @@ namespace Bank_Application.Controller
         }
         private void ShowBalance()
         {
-            this.bankService.Balance(userBankInfo);
             view.ShowBalanceOutput(userBankInfo.Balance);
         }
         private void WithdrawMoney()
@@ -194,6 +224,78 @@ namespace Bank_Application.Controller
             {
                 userBankInfo.Balance = this.bankService.Transfer(userBankInfo, ibanReceiving, transferAmount);
                 view.TransferMoneyOutput(transferAmount, ibanReceiving, userBankInfo.Balance);
+            }
+        }
+        private void ShowCreditInfo()
+        {
+            if(creditBooleanInfo.Has_taken_credit)
+            {
+                view.CreditInfo(creditDateInfo.Credit_taken_date, creditDateInfo.Credit_toReturn_date, 
+                    creditMoneyInfo.Credit_amount, creditMoneyInfo.Credit_interest, creditMoneyInfo.Credit_ToBePaid);
+            }
+            else
+            {
+                view.YouHaveNoExistingCreditsMessage();
+            }
+        }
+        private void TakeCredit()
+        {
+            if(creditBooleanInfo.Has_taken_credit)
+            {
+                view.YouCantTakeMoreThanOneCredit();                   
+            }
+            else
+            {
+                view.ViewAllCreditCommands();
+                ProcessCreditCommands(view.CreditChoice);
+            }
+            
+        }
+        private void Credit1()
+        {
+            creditBooleanInfo.Has_taken_credit = true;
+            creditDateInfo = this.bankService.CalculateCreditDateInfos(1, userBankInfo.Card_number);
+            creditMoneyInfo = this.bankService.CalculateCreditMoneyInfos(1, userBankInfo.Card_number);
+            userBankInfo.Balance += creditMoneyInfo.Credit_amount;
+            view.SuccessfulCreditTakeMessage(userBankInfo.Balance);
+            this.bankService.TakeCredit(userBankInfo, creditBooleanInfo, creditDateInfo, creditMoneyInfo);
+
+
+        }
+        private void Credit2()
+        {
+            creditBooleanInfo.Has_taken_credit = true;
+            creditDateInfo = this.bankService.CalculateCreditDateInfos(2, userBankInfo.Card_number);
+            creditMoneyInfo = this.bankService.CalculateCreditMoneyInfos(2, userBankInfo.Card_number);
+            userBankInfo.Balance += creditMoneyInfo.Credit_amount;
+            view.SuccessfulCreditTakeMessage(userBankInfo.Balance);
+            this.bankService.TakeCredit(userBankInfo, creditBooleanInfo, creditDateInfo, creditMoneyInfo);
+        }
+        private void Credit3()
+        {
+            creditBooleanInfo.Has_taken_credit = true;
+            creditDateInfo = this.bankService.CalculateCreditDateInfos(3, userBankInfo.Card_number);
+            creditMoneyInfo = this.bankService.CalculateCreditMoneyInfos(3, userBankInfo.Card_number);
+            userBankInfo.Balance += creditMoneyInfo.Credit_amount;
+            view.SuccessfulCreditTakeMessage(userBankInfo.Balance);
+            this.bankService.TakeCredit(userBankInfo, creditBooleanInfo, creditDateInfo, creditMoneyInfo);
+        }
+        public void GoBack()
+        {
+            Run(true);
+        }
+        private void PayCredit()
+        {
+            if(userBankInfo.Balance < creditMoneyInfo.Credit_ToBePaid)
+            {
+                view.NotEnoughMoneyToPayCreditMessage();
+            }
+            else
+            {
+                creditBooleanInfo.Has_taken_credit = false;
+                userBankInfo.Balance -= creditMoneyInfo.Credit_ToBePaid;
+                this.bankService.PayCredit(userBankInfo, creditBooleanInfo, creditDateInfo, creditMoneyInfo);
+                view.CreditSuccessfulyPaidMessage(userBankInfo.Balance);
             }
         }
         public void LogOut()

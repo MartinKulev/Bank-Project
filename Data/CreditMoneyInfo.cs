@@ -13,9 +13,12 @@ namespace Bank_Application.Data
         {
 
         }
-        public CreditMoneyInfo(string card_number)
+        public CreditMoneyInfo(string card_number, double credit_amount, double credit_interest, double credit_toBePaid)
         {
             Card_number = card_number;
+            Credit_amount = credit_amount;
+            Credit_interest = credit_interest;
+            Credit_ToBePaid = credit_toBePaid;
         }
         [Key]
         public string Card_number { get; set; }

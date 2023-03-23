@@ -10,6 +10,7 @@ namespace Bank_Application.View
     public class AppView
     {
         public int CommandNumber { get; private set; }
+        public int CreditChoice { get; private set; }
 
         public void PrintAllStartupCommands()
         {
@@ -205,5 +206,66 @@ namespace Bank_Application.View
             Console.WriteLine(balance + "$ ");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
+        public void YouHaveNoExistingCreditsMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("You have no existing credits!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        public void CreditInfo(string dateTaken, string dateToReturn, double amount, double interest, double toBePaid)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("You have 1 existing credit:");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine($"Date taken: {dateTaken}");
+            Console.WriteLine($"Date to return: {dateToReturn}");
+            Console.WriteLine($"Credit amount: {amount}");
+            Console.WriteLine($"Credit interest: {interest}");
+            Console.WriteLine($"To be paid: {toBePaid}$");
+        }
+        public void YouCantTakeMoreThanOneCredit()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("You cannot take more than 1 credit at a time!");
+            Console.WriteLine("Pay your other credit first!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        public void ViewAllCreditCommands()
+        {
+            Console.WriteLine("List of available credits:");
+            Console.WriteLine("1. 1000$ for 1 year with 3% interest");
+            Console.WriteLine("2. 500$ for 6 months with 4% interest");
+            Console.WriteLine("3. 250$ for 3 months with 5% interest");
+            Console.WriteLine("4. Go back");
+
+            CreditChoice = int.Parse(Console.ReadLine());
+        }
+        public void SuccessfulCreditTakeMessage(double balance)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("You have successfuly taken a credit!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Your new balance: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(balance + "$ ");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        public void NotEnoughMoneyToPayCreditMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Not enough balance to pay your credit!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        public void CreditSuccessfulyPaidMessage(double balance)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Credit Successfuly paid!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Your new balance: ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(balance + "$ ");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
     }
 }

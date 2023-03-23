@@ -6,7 +6,7 @@ using Bank_Application.View;
 
 AppView view = new AppView();
 
-BankService bankService = new BankService(view);
+BankService bankService = new BankService();
 BankController bankController = new BankController(bankService, view);
 
 bankController.Run(false);

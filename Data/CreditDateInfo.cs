@@ -13,9 +13,11 @@ namespace Bank_Application.Data
         {
 
         }
-        public CreditDateInfo(string card_number)
+        public CreditDateInfo(string card_number, string credit_taken_date, string credit_toReturn_date)
         {
             Card_number = card_number;
+            Credit_taken_date = credit_taken_date;
+            Credit_toReturn_date = credit_toReturn_date;
         }
         [Key]
         public string Card_number { get; set; }

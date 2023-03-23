@@ -12,17 +12,13 @@ namespace Bank_Application.Service
 {
     public class BankService
     {
-        private AppView view;
-        public BankService(AppView appView)
-        { 
-            this.view = appView;
-        }
-        public void RegisterUser(UserInfo userInfo, UserBankInfo userBankInfo)
+        public void RegisterUser(UserInfo userInfo, UserBankInfo userBankInfo, CreditBooleanInfo creditBooleanInfo)
         {
             using (BankContext context = new BankContext())
             {
                 context.UserInfos.Add(userInfo);
-                context.UserBankInfos.Add(userBankInfo);                             
+                context.UserBankInfos.Add(userBankInfo);
+                context.CreditBooleanInfos.Add(creditBooleanInfo);
                 context.SaveChanges();
             }
         }
@@ -68,10 +64,31 @@ namespace Bank_Application.Service
                 return context.UserInfos.FirstOrDefault(p => p.EGN == egn);
             }
         }
-        public double Balance(UserBankInfo userBankInfo)
+        public CreditBooleanInfo LogInUserInto3rdTable(string card_number)
         {
-            return userBankInfo.Balance;           
+            using (BankContext context = new BankContext())
+            {
+
+                return context.CreditBooleanInfos.FirstOrDefault(p => p.Card_number == card_number);
+            }
         }
+        public CreditDateInfo LogInUserInto4thTable(string card_number)
+        {
+            using (BankContext context = new BankContext())
+            {
+
+                return context.CreditDateInfos.FirstOrDefault(p => p.Card_number == card_number);
+            }
+        }
+        public CreditMoneyInfo LogInUserInto5thTable(string card_number)
+        {
+            using (BankContext context = new BankContext())
+            {
+
+                return context.CreditMoneyInfos.FirstOrDefault(p => p.Card_number == card_number);
+            }
+        }
+
         public void WithdrawDeposit(UserBankInfo userBankInfo)
         {
             
@@ -100,6 +117,74 @@ namespace Bank_Application.Service
             }
             return userBankInfo.Balance;
         }
-        
+        public CreditDateInfo CalculateCreditDateInfos(int creditChoice, string card_number)
+        {
+            
+            DateTime currentDate = DateTime.Now.Date;
+            DateTime dateAfterOneYear = currentDate.AddYears(1);
+            DateTime dateAfterSixMonths = currentDate.AddMonths(6);
+            DateTime dateAfterThreeMonths = currentDate.AddMonths(3);
+            string credit_taken_date = currentDate.ToString("yyyy-MM-dd");
+            string credit_ToReturn_date = string.Empty;
+
+            if (creditChoice == 1)
+            {
+                credit_ToReturn_date = dateAfterOneYear.ToString("yyyy-MM-dd");
+            }
+            else if(creditChoice == 2)
+            {
+                credit_ToReturn_date = dateAfterSixMonths.ToString("yyyy-MM-dd");
+            }
+            else if(creditChoice == 3)
+            {
+                credit_ToReturn_date = dateAfterThreeMonths.ToString("yyyy-MM-dd");
+            }
+
+            return new CreditDateInfo(card_number, credit_taken_date, credit_ToReturn_date);
+        }
+        public CreditMoneyInfo CalculateCreditMoneyInfos(int creditChoice, string card_number)
+        {
+            double creditAmount = 0;
+            double creditInterest = 0;
+            if(creditChoice == 1)
+            {
+                creditAmount = 1000;
+                creditInterest = 0.03;
+            }
+            else if (creditChoice == 2)
+            {
+                creditAmount = 500;
+                creditInterest = 0.04;
+            }
+            else if (creditChoice == 3)
+            {
+                creditAmount = 250;
+                creditInterest = 0.05;
+            }
+            double creditToBePaid = creditAmount + (creditAmount * creditInterest);
+            return new CreditMoneyInfo(card_number, creditAmount, creditInterest, creditToBePaid);
+        }
+        public void TakeCredit(UserBankInfo userBankInfo, CreditBooleanInfo creditBooleanInfo, CreditDateInfo creditDateInfo, CreditMoneyInfo creditMoneyInfo)
+        {
+            using (BankContext context = new BankContext())
+            {
+                context.UserBankInfos.Update(userBankInfo);
+                context.CreditBooleanInfos.Update(creditBooleanInfo);
+                context.CreditDateInfos.Add(creditDateInfo);
+                context.CreditMoneyInfos.Add(creditMoneyInfo);
+                context.SaveChanges();
+            }
+        }
+        public void PayCredit(UserBankInfo userBankInfo, CreditBooleanInfo creditBooleanInfo, CreditDateInfo creditDateInfo, CreditMoneyInfo creditMoneyInfo)
+        {
+            using (BankContext context = new BankContext())
+            {
+                context.UserBankInfos.Update(userBankInfo);
+                context.CreditBooleanInfos.Update(creditBooleanInfo);
+                context.CreditDateInfos.Remove(creditDateInfo);
+                context.CreditMoneyInfos.Remove(creditMoneyInfo);
+                context.SaveChanges();
+            }
+        }
     }
 }

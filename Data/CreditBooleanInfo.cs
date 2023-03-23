@@ -13,9 +13,10 @@ namespace Bank_Application.Data
         {
 
         }
-        public CreditBooleanInfo(string card_number)
+        public CreditBooleanInfo(string card_number, bool has_taken_credit)
         {
             Card_number = card_number;
+            Has_taken_credit = has_taken_credit;
         }
         [Key]
         public string Card_number { get; set; }
