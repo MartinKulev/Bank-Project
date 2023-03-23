@@ -53,7 +53,7 @@ namespace Bank_Application.Controller
                 case 2:
                     this.LogIn();
                     break;
-                case 3:
+                case 0:
                     isRunning = false;
                     break;
             }

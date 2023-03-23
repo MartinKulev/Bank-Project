@@ -21,7 +21,7 @@ namespace Bank_Application.View
 
             Console.WriteLine("1. Register User.");
             Console.WriteLine("2. LogIn User.");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("0. Exit");
 
             CommandNumber = int.Parse(Console.ReadLine());
         }
@@ -36,7 +36,7 @@ namespace Bank_Application.View
             Console.WriteLine("1. Show Balance");
             Console.WriteLine("2. Withdraw Money.");
             Console.WriteLine("3. Deposit Money.");
-            Console.WriteLine("4. Send Money.");
+            Console.WriteLine("4. Transfer Money.");
             Console.WriteLine("5. Show Credit Info");
             Console.WriteLine("6. Take Credit.");
             Console.WriteLine("7. Pay Credit.");
