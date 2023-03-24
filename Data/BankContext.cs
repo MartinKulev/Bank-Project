@@ -12,6 +12,7 @@ namespace Bank_Application.Data
         public DbSet<UserInfo> UserInfos { get; set; }
         public DbSet<UserBankInfo> UserBankInfos { get; set; }
 
+        public DbSet<UserIBANInfo> UserIBANInfos { get; set; }
         public DbSet<CreditBooleanInfo> CreditBooleanInfos { get; set; }
         public DbSet<CreditDateInfo> CreditDateInfos{ get; set; }
         public DbSet<CreditMoneyInfo> CreditMoneyInfos { get; set; }

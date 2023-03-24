@@ -20,6 +20,7 @@ namespace Bank_Application.Controller
         private CreditMoneyInfo creditMoneyInfo;
         private CreditDateInfo creditDateInfo;
         private CreditBooleanInfo creditBooleanInfo;
+        private UserIBANInfo userIBANInfo;
 
         public BankController(BankService bankService, AppView appView)
         {
@@ -61,6 +62,8 @@ namespace Bank_Application.Controller
                 case 0:
                     isRunning = false;
                     break;
+                default:
+                    break;
             }
         }
         private void ProcessAllCommands(int command)
@@ -94,6 +97,8 @@ namespace Bank_Application.Controller
                 case 0:
                 isRunning = false;
                 break;
+                default:
+                    break;
             }
         }
         private void ProcessCreditCommands(int creditChoice)
@@ -112,6 +117,8 @@ namespace Bank_Application.Controller
                 case 4:
                     this.GoBack();
                     break;
+                default:
+                    break;
             }
         }
         private void Register()
@@ -123,6 +130,8 @@ namespace Bank_Application.Controller
             string iban = this.bankService.CreateRandomIBAN();
             userBankInfo = new UserBankInfo(card_number, pin, userInfo.EGN, iban);
             creditBooleanInfo = new CreditBooleanInfo(card_number, false);
+            userIBANInfo = new UserIBANInfo(iban);
+
 
             bool registrationSuccess = true;
             if (userInfo.EGN.Length != 10)
@@ -156,7 +165,7 @@ namespace Bank_Application.Controller
             if (registrationSuccess)
             {
                 view.SuccessfulRegistrationMessage(card_number, iban);
-                this.bankService.RegisterUser(userInfo, userBankInfo, creditBooleanInfo);
+                this.bankService.RegisterUser(userInfo, userBankInfo, creditBooleanInfo, userIBANInfo);
             }
                 bool loginSuccess = false;
                 Run(loginSuccess);
@@ -164,27 +173,36 @@ namespace Bank_Application.Controller
         }
         private void LogIn()
         {
-            string card_number = view.ReadLogInCardNumber();
-            string pin = view.ReadLogInPIN();         
-            userBankInfo = this.bankService.LogInUserInto1stTable(card_number);
-            userInfo = this.bankService.LogInUserInto2ndTable(userBankInfo.EGN);
-            creditBooleanInfo = this.bankService.LogInUserInto3rdTable(card_number);
-            creditDateInfo = this.bankService.LogInUserInto4thTable(card_number);
-            creditMoneyInfo = this.bankService.LogInUserInto5thTable(card_number);
-
             bool loginSuccess = false;
-            if (pin != userBankInfo.PIN)
+            string card_number = view.ReadLogInCardNumber();
+            string pin = view.ReadLogInPIN();
+            userBankInfo = new UserBankInfo(card_number);
+            bool cardNumberExists = this.bankService.DoesCardNumberExists(userBankInfo);
+            if (cardNumberExists == false)
             {
-                view.WrongPINCodeMessage();
+                view.CardDoesntExistMessage();
                 loginSuccess = false;
             }
             else
             {
-                view.SuccessfulLogInMessage(userInfo.First_name, userInfo.Last_name);
-                loginSuccess = true;
-            }
-            Run(loginSuccess);
-            
+                userBankInfo = this.bankService.LogInUserInto1stTable(card_number);
+                userInfo = this.bankService.LogInUserInto2ndTable(userBankInfo.EGN);
+                creditBooleanInfo = this.bankService.LogInUserInto3rdTable(card_number);
+                creditDateInfo = this.bankService.LogInUserInto4thTable(card_number);
+                creditMoneyInfo = this.bankService.LogInUserInto5thTable(card_number);
+                userIBANInfo = new UserIBANInfo(userBankInfo.IBAN);
+                if (pin != userBankInfo.PIN)
+                {
+                    view.WrongPINCodeMessage();
+                    loginSuccess = false;
+                }
+                else
+                {
+                    view.SuccessfulLogInMessage(userInfo.First_name, userInfo.Last_name);
+                    loginSuccess = true;
+                }
+            }                                  
+            Run(loginSuccess);           
         }
         private void ShowBalance()
         {
@@ -215,16 +233,24 @@ namespace Bank_Application.Controller
         {
             string ibanReceiving = view.TransferMoneyInputIBAN();
             double transferAmount = view.TransferMoneyInputAmount();
-            
-            if(transferAmount > userBankInfo.Balance)
+            userIBANInfo = new UserIBANInfo(ibanReceiving);
+            bool ibanExists = this.bankService.DoesIBANExist(userIBANInfo);
+            if(ibanExists == false)
             {
-                view.TransferMoneyErrorMessage();
+                view.IBANDoesntExistMessage();
             }
             else
             {
-                userBankInfo.Balance = this.bankService.Transfer(userBankInfo, ibanReceiving, transferAmount);
-                view.TransferMoneyOutput(transferAmount, ibanReceiving, userBankInfo.Balance);
-            }
+                if (transferAmount > userBankInfo.Balance)
+                {
+                    view.TransferMoneyErrorMessage();
+                }
+                else
+                {
+                    userBankInfo.Balance = this.bankService.Transfer(userBankInfo, ibanReceiving, transferAmount);
+                    view.TransferMoneyOutput(transferAmount, ibanReceiving, userBankInfo.Balance);
+                }
+            }         
         }
         private void ShowCreditInfo()
         {

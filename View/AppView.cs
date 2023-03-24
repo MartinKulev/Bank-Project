@@ -112,7 +112,7 @@ namespace Bank_Application.View
         }
         public string ReadLogInPIN()
         {
-            Console.Write("Enter your Pin code: ");
+            Console.Write("Enter your PIN code: ");
             string pin = Console.ReadLine();
             return pin;
         }
@@ -120,6 +120,12 @@ namespace Bank_Application.View
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Wrong PIN code!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        public void CardDoesntExistMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Card Doesn't exist");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         public void SuccessfulLogInMessage(string first_name, string last_name)
@@ -192,6 +198,12 @@ namespace Bank_Application.View
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("You can't trasnfer more money than you have!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+        public void IBANDoesntExistMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("IBAN doesn't exist!");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
         public void TransferMoneyOutput(double transferAmount, string iban, double balance)

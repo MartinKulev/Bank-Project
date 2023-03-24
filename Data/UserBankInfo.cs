@@ -23,13 +23,18 @@ namespace Bank_Application.Data
             IBAN = iban;
 
         }
+        public UserBankInfo(string card_number)
+        {
+            Card_number = card_number;
+
+        }
         [Key]
         public string Card_number { get; set; }
 
         public string PIN { get; set; }
 
         public string IBAN { get; set; }
-        [ForeignKey(nameof(UserInfo))]
+
         public string EGN { get; set; }
 
         public double Balance { get; set; }

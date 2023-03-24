@@ -12,13 +12,14 @@ namespace Bank_Application.Service
 {
     public class BankService
     {
-        public void RegisterUser(UserInfo userInfo, UserBankInfo userBankInfo, CreditBooleanInfo creditBooleanInfo)
+        public void RegisterUser(UserInfo userInfo, UserBankInfo userBankInfo, CreditBooleanInfo creditBooleanInfo, UserIBANInfo userIBANInfo)
         {
             using (BankContext context = new BankContext())
             {
                 context.UserInfos.Add(userInfo);
                 context.UserBankInfos.Add(userBankInfo);
                 context.CreditBooleanInfos.Add(creditBooleanInfo);
+                context.UserIBANInfos.Add(userIBANInfo);
                 context.SaveChanges();
             }
         }
@@ -88,6 +89,14 @@ namespace Bank_Application.Service
                 return context.CreditMoneyInfos.FirstOrDefault(p => p.Card_number == card_number);
             }
         }
+        public bool DoesCardNumberExists(UserBankInfo userBankInfo)
+        {
+            using (BankContext context = new BankContext())
+            {
+
+                return context.UserBankInfos.Contains(userBankInfo);
+            }
+        }
 
         public void WithdrawDeposit(UserBankInfo userBankInfo)
         {
@@ -116,6 +125,13 @@ namespace Bank_Application.Service
                 context.SaveChanges();
             }
             return userBankInfo.Balance;
+        }
+        public bool DoesIBANExist(UserIBANInfo userIBANInfo)
+        {
+            using (BankContext context = new BankContext())
+            {
+                return context.UserIBANInfos.Contains(userIBANInfo);
+            }
         }
         public CreditDateInfo CalculateCreditDateInfos(int creditChoice, string card_number)
         {
