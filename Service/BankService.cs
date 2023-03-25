@@ -23,6 +23,14 @@ namespace Bank_Application.Service
                 context.SaveChanges();
             }
         }
+        public bool DoesEGNExists(UserInfo userInfo)
+        {
+            using (BankContext context = new BankContext())
+            {
+
+                return context.UserInfos.Contains(userInfo);
+            }
+        }
         public string CreateRandomCardNumber()
         {
             Random random = new Random();
@@ -96,7 +104,7 @@ namespace Bank_Application.Service
 
                 return context.UserBankInfos.Contains(userBankInfo);
             }
-        }
+        }       
 
         public void WithdrawDeposit(UserBankInfo userBankInfo)
         {

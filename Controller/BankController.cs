@@ -154,13 +154,11 @@ namespace Bank_Application.Controller
                 view.IncorrectPINCountMessage();
                 registrationSuccess = false;
             }
-            using (BankContext context = new BankContext())
+            bool egnExists = this.bankService.DoesEGNExists(userInfo);
+            if (egnExists)
             {
-                if (context.UserInfos.Contains(userInfo))
-                {
-                    view.UserAlreadyRegisteredMessage();
-                    registrationSuccess = false;
-                }
+                view.UserAlreadyRegisteredMessage();
+                registrationSuccess = false;
             }
             if (registrationSuccess)
             {
