@@ -23,7 +23,7 @@ namespace Bank_Application.Service
                 context.SaveChanges();
             }
         }
-        public bool DoesEGNExists(UserInfo userInfo)
+        public bool DoesEGNExist(UserInfo userInfo)
         {
             using (BankContext context = new BankContext())
             {
@@ -97,7 +97,7 @@ namespace Bank_Application.Service
                 return context.CreditMoneyInfos.FirstOrDefault(p => p.Card_number == card_number);
             }
         }
-        public bool DoesCardNumberExists(UserBankInfo userBankInfo)
+        public bool DoesCardNumberExist(UserBankInfo userBankInfo)
         {
             using (BankContext context = new BankContext())
             {
@@ -111,10 +111,7 @@ namespace Bank_Application.Service
             
             using (BankContext context = new BankContext())
             {
-                UserBankInfo user = LogInUserInto1stTable(userBankInfo.Card_number);
-
-                user.Balance = userBankInfo.Balance;
-                context.UserBankInfos.Update(user);
+                context.UserBankInfos.Update(userBankInfo);
                 context.SaveChanges();
             }
         }

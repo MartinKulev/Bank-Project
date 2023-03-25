@@ -154,7 +154,7 @@ namespace Bank_Application.Controller
                 view.IncorrectPINCountMessage();
                 registrationSuccess = false;
             }
-            bool egnExists = this.bankService.DoesEGNExists(userInfo);
+            bool egnExists = this.bankService.DoesEGNExist(userInfo);
             if (egnExists)
             {
                 view.UserAlreadyRegisteredMessage();
@@ -175,7 +175,7 @@ namespace Bank_Application.Controller
             string card_number = view.ReadLogInCardNumber();
             string pin = view.ReadLogInPIN();
             userBankInfo = new UserBankInfo(card_number);
-            bool cardNumberExists = this.bankService.DoesCardNumberExists(userBankInfo);
+            bool cardNumberExists = this.bankService.DoesCardNumberExist(userBankInfo);
             if (cardNumberExists == false)
             {
                 view.CardDoesntExistMessage();
