@@ -310,17 +310,25 @@ namespace Bank_Application.Controller
         }
         private void PayCredit()
         {
-            if(userBankInfo.Balance < creditMoneyInfo.Credit_ToBePaid)
+            if(creditBooleanInfo.Has_taken_credit)
             {
-                view.NotEnoughMoneyToPayCreditMessage();
+                if (userBankInfo.Balance < creditMoneyInfo.Credit_ToBePaid)
+                {
+                    view.NotEnoughMoneyToPayCreditMessage();
+                }
+                else
+                {
+                    creditBooleanInfo.Has_taken_credit = false;
+                    userBankInfo.Balance -= creditMoneyInfo.Credit_ToBePaid;
+                    this.bankService.PayCredit(userBankInfo, creditBooleanInfo, creditDateInfo, creditMoneyInfo);
+                    view.CreditSuccessfulyPaidMessage(userBankInfo.Balance);
+                }
             }
             else
             {
-                creditBooleanInfo.Has_taken_credit = false;
-                userBankInfo.Balance -= creditMoneyInfo.Credit_ToBePaid;
-                this.bankService.PayCredit(userBankInfo, creditBooleanInfo, creditDateInfo, creditMoneyInfo);
-                view.CreditSuccessfulyPaidMessage(userBankInfo.Balance);
+                view.YouHaveNoExistingCreditsMessage();
             }
+            
         }
         public void LogOut()
         {
