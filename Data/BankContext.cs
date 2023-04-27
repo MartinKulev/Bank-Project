@@ -19,7 +19,7 @@ namespace Bank_Application.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=localhost;Database=Bank;Uid=root;Pwd=IceCrown06;");
+            optionsBuilder.UseMySQL("Server=localhost;Database=Bank;Uid=root;Pwd=1234;");
 
             base.OnConfiguring(optionsBuilder);
         }
