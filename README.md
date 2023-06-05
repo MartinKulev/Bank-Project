@@ -39,11 +39,10 @@ Upon pressing this button you will be shown a view, in which you can see if you 
 # Take Credit
 Upon pressing this button you will be shown a view with 3 options for a credit. You can only take 1 credit at a time.
 If you have an existing credit, you will not be able to take another credit until you pay your current one and an error message will be displayed. 
-If you don't have an existing credit and you press one of the buttons for credit you will be taken to another page with a message that you succesfully took a credit and an updated balance will be shown.
-You can press "Go Back" at any time to return to the Bank Menu page.
+If you don't have an existing credit and you press one of the buttons for credit you will be shown a view with a message that you succesfully took a credit and an updated balance. You can choose "Go Back" at any time to return to the Bank Menu page.
 
 # Pay Credit
-Upon pressing this button you will be taken to a page with a message, according to your credit payability status. You can press "Go Back" at any time to return to the Bank Menu page.
+Upon choosing this option you will be shown a view with a message, according to your credit payability status.
 
 # Logout
-Upon pressing this button you will be taken to the starter page. There you can Login or Register.
+Upon choosing this option you will be shown the starter view. There you can Login or Register.
