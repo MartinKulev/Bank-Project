@@ -30,14 +30,14 @@ Then by pressing enter you can deposit the amount you wrote if the number entere
 
 # Transfer Money
 Upon choosing this option you will be shown a view, in which you can type in the IBAN of the person you are sending money to and the amount of money you wish to trasnfer.
-Then by pressing enter you can transer the amount you wrote to the IBAN you wrote.
-Upon entering valid information the money will be sent. You can press "Go Back" at any time to return to the Bank Menu page.
+Then by pressing enter you can transfer the amount you wrote to the IBAN you wrote.
+Upon entering valid information the money will be sent.
 
 # Show Credit Info
-Upon pressing this button you will be taken to a page, in which you can see if you have an existing credit and if you have one - you can see the information about the credit. You can press "Go Back" at any time to return to the Bank Menu page.
+Upon pressing this button you will be shown a view, in which you can see if you have an existing credit and if you have one - you can see the information about the credit.
 
 # Take Credit
-Upon pressing this button you will be taken to a page with 3 buttons for a credit. You can only take 1 credit at a time.
+Upon pressing this button you will be shown a view with 3 options for a credit. You can only take 1 credit at a time.
 If you have an existing credit, you will not be able to take another credit until you pay your current one and an error message will be displayed. 
 If you don't have an existing credit and you press one of the buttons for credit you will be taken to another page with a message that you succesfully took a credit and an updated balance will be shown.
 You can press "Go Back" at any time to return to the Bank Menu page.
