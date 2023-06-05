@@ -34,15 +34,15 @@ Then by pressing enter you can transfer the amount you wrote to the IBAN you wro
 Upon entering valid information the money will be sent.
 
 # Show Credit Info
-Upon pressing this button you will be shown a view, in which you can see if you have an existing credit and if you have one - you can see the information about the credit.
+Upon choosing this option you will be shown a view, in which you can see if you have an existing credit and if you have one - you can see the information about the credit.
 
 # Take Credit
-Upon pressing this button you will be shown a view with 3 options for a credit if you don't have an existing credit. You can only take 1 credit at a time.
+Upon choosing this option you will be shown a view with 3 options for a credit if you don't have an existing credit. You can only take 1 credit at a time.
 If you have an existing credit, you will not be able to take another credit until you pay your current one and an error message will be displayed. 
-If you don't have an existing credit and you press one of the buttons for credit you will be shown a view with a message that you succesfully took a credit and an updated balance. You can choose "Go Back" at any time to return to the Bank Menu page.
+If you don't have an existing credit you can choose an option for a credit. You can choose "Go Back" at any time to return to the Bank Menu page.
 
 # Pay Credit
-Upon choosing this option you will be shown a view with a message, according to your credit payability status.
+Upon choosing this option you will be shown a view with a message, according to your credit paying status.
 
 # Logout
 Upon choosing this option you will be shown the starter view. There you can Login or Register.
