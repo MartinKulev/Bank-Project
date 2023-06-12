@@ -37,9 +37,7 @@ Upon entering valid information the money will be sent.
 Upon choosing this option you will be shown a view, in which you can see if you have an existing credit and if you have one - you can see the information about the credit.
 
 # Take Credit
-Upon choosing this option you will be shown a view with 3 options for a credit if you don't have an existing credit. You can only take 1 credit at a time.
-If you have an existing credit, you will not be able to take another credit until you pay your current one and an error message will be displayed. 
-If you don't have an existing credit you can choose an option for a credit. You can choose "Go Back" at any time to return to the Bank Menu page.
+Upon choosing this option and if you don't have an existing credit you will be shown a view with 3 options for a credit. There you can take take a credit by choosing 1 of the 3 options for a credit. If you have an existing credit, you will not be able to take another credit until you pay your current one and an error message will be displayed instead. You can choose "Go Back" at any time to return to the Bank Menu page.
 
 # Pay Credit
 Upon choosing this option you will be shown a view with a message, according to your credit paying status.
